@@ -1,0 +1,103 @@
+/* 3D Flip Card */
+.study-card-container {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 500px;
+  height: 300px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.study-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.study-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.study-card-front,
+.study-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  text-align: center;
+  border: 2px solid var(--border);
+}
+
+.study-card-front {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+}
+
+.study-card-back {
+  background: linear-gradient(135deg, #1a1040 0%, #2d1b69 100%);
+  border-color: var(--accent);
+  transform: rotateY(180deg);
+}
+
+.study-card-front .card-label,
+.study-card-back .card-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.study-card-front .card-text,
+.study-card-back .card-text {
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.7;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.study-card-back .card-text { color: var(--accent); }
+
+/* Keyframes */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes confettiFall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: confettiFall linear forwards;
+}
+
+.animate-fadeIn { animation: fadeIn 0.3s ease; }
+.animate-slideUp { animation: slideUp 0.4s ease; }
+.animate-bounceIn { animation: bounceIn 0.5s ease; }
+.animate-pulse { animation: pulse 2s infinite; }
+
+@media (max-width: 768px) {
+  .study-card-container { height: 250px; }
+  .study-card-front .card-text,
+  .study-card-back .card-text { font-size: 1rem; }
+}
