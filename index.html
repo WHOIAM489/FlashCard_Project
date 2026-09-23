@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrainDeck — Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <i class="fa-solid fa-layer-group"></i>
+        BrainDeck
+      </a>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <a href="settings.html" class="settings-header-btn" title="ตั้งค่า"><i class="fa-solid fa-gear"></i></a>
+        <div id="userBar"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 30px; padding-bottom: 60px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 8px;">
+      <h1 class="page-title">My Decks</h1>
+      <button class="btn btn-primary btn-lg" id="btnCreateDeck">
+        <i class="fa-solid fa-plus"></i> Create New Deck
+      </button>
+    </div>
+    <p class="page-subtitle">จัดการกองการ์ดของคุณ — สร้าง ทบทวน และติดตามผล</p>
+
+    <div id="deckContainer">
+      <div class="loading"><i class="fa-solid fa-spinner"></i> กำลังโหลด...</div>
+    </div>
+  </main>
+
+  <div id="modalRoot"></div>
+
+  <!-- Supabase mode -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/supabaseAuth.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/settings.js"></script>
+  <script>
+    SupabaseAuth.requireAuth();
+    SupabaseAuth.initUserBar();
+  </script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

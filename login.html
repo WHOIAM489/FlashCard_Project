@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrainDeck — Login</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body class="auth-body">
+  <a href="index.html" class="auth-back-home"><i class="fa-solid fa-arrow-left"></i> กลับหน้าแรก</a>
+
+  <div class="auth-grid">
+    <div class="auth-brand">
+      <i class="fa-solid fa-layer-group auth-brand-logo"></i>
+      <h1>BrainDeck</h1>
+      <p>ทบทวนบทเรียนด้วย Flashcard ดิจิทัล สร้างการ์ด ทดสอบตัวเอง และติดตามความก้าวหน้าได้อย่างมีประสิทธิภาพ</p>
+      <div class="auth-brand-features">
+        <div class="brand-feature"><i class="fa-solid fa-wand-magic-sparkles"></i> สร้างกองการ์ดและแก้ไขเนื้อหาได้ง่าย</div>
+        <div class="brand-feature"><i class="fa-solid fa-arrows-rotate"></i> ระบบ Smart Queue ทบทวนซ้ำอัตโนมัติ</div>
+        <div class="brand-feature"><i class="fa-solid fa-chart-line"></i> ติดตามความคืบหน้าแบบ Real-time</div>
+      </div>
+    </div>
+
+    <div class="auth-form-wrap">
+      <h2>ยินดีต้อนรับกลับ!</h2>
+      <p class="auth-sub">เข้าสู่ระบบเพื่อจัดการกองการ์ดของคุณ</p>
+
+      <div class="auth-error" id="errorBox">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="errorMsg"></span>
+      </div>
+
+      <form id="loginForm" autocomplete="on">
+        <div class="auth-input-group">
+          <input class="auth-input" type="text" id="inputUser" placeholder="Username หรือ Email" required />
+          <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div class="auth-input-group">
+          <input class="auth-input" type="password" id="inputPassword" placeholder="รหัสผ่าน" required />
+          <i class="fa-solid fa-lock"></i>
+          <button type="button" class="toggle-password" onclick="togglePassword('inputPassword', this)"><i class="fa-regular fa-eye"></i></button>
+        </div>
+
+        <button type="submit" class="auth-btn" id="btnLogin">
+          <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบ
+        </button>
+      </form>
+
+      <p class="auth-switch">ยังไม่มีบัญชี? <a href="register.html">สมัครสมาชิก</a></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/supabaseAuth.js"></script>
+  <script>
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      btn.innerHTML = isPassword ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+    }
+
+    function showError(msg) {
+      document.getElementById("errorMsg").textContent = msg;
+      document.getElementById("errorBox").classList.add("show");
+    }
+
+    function clearError() {
+      document.getElementById("errorBox").classList.remove("show");
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearError();
+
+      const userVal = document.getElementById("inputUser").value.trim();
+      const passVal = document.getElementById("inputPassword").value;
+
+      if (!userVal || !passVal) {
+        showError("กรุณากรอก Username/Email และรหัสผ่าน");
+        return;
+      }
+
+      const result = await SupabaseAuth.login(userVal, passVal);
+      if (result.ok) {
+        const params = new URLSearchParams(window.location.search);
+        const returnTo = params.get("return") || "index.html";
+        window.location.href = returnTo;
+      } else {
+        showError(result.message);
+      }
+    });
+
+    document.querySelectorAll(".auth-input").forEach((el) => {
+      el.addEventListener("input", () => {
+        el.closest(".auth-input-group").classList.toggle("has-value", el.value.length > 0);
+        clearError();
+      });
+    });
+
+    SupabaseAuth.isLoggedIn().then((ok) => {
+      if (ok) window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

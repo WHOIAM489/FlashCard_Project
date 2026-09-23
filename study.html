@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrainDeck — Study Mode</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <i class="fa-solid fa-layer-group"></i>
+        BrainDeck
+      </a>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span id="deckLabel" style="color:var(--text-secondary);font-size:0.9rem;"></span>
+        <a href="settings.html" class="settings-header-btn" title="ตั้งค่า"><i class="fa-solid fa-gear"></i></a>
+        <a id="btnBack" href="index.html" class="btn btn-sm btn-outline"><i class="fa-solid fa-xmark"></i> Exit</a>
+        <div id="userBar"></div>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: 24px; padding-bottom: 60px;">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:12px;">
+        <h1 class="page-title" style="font-size:1.3rem;">Study Mode</h1>
+
+        <div style="display:flex;justify-content:center;gap:20px;color:var(--text-secondary);font-size:0.9rem;flex-wrap:wrap;margin-top:6px;">
+          <span><i class="fa-solid fa-check" style="color:var(--success);"></i> จำได้ <span id="gotCount">0</span></span>
+          <span><i class="fa-solid fa-xmark" style="color:var(--danger);"></i> ยังจำไม่ได้ <span id="againCount">0</span></span>
+          <span><i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> ตอบแล้ว <span id="progressText">0 / 0</span></span>
+        </div>
+
+        <div id="progressGrid" class="study-progress"></div>
+        <div class="sg-legend">
+          <span><span class="sg-dot got"></span>จำได้</span>
+          <span><span class="sg-dot again"></span>ยังจำไม่ได้</span>
+          <span><span class="sg-dot pending"></span>ยังไม่ตอบ</span>
+        </div>
+
+        <div class="study-toolbar">
+          <div class="shuffle-label">
+            <i class="fa-solid fa-shuffle"></i> สุ่มการ์ด
+            <label class="switch" style="vertical-align:middle;">
+              <input type="checkbox" id="shuffleToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div id="studyArea" style="margin-top:16px;">
+        <div class="loading"><i class="fa-solid fa-spinner"></i> กำลังโหลดการ์ด...</div>
+      </div>
+
+      <div style="text-align:center;margin-top:26px;">
+        <div id="finishArea" style="display:none;max-width:500px;margin:0 auto 18px;">
+          <button class="btn btn-lg btn-finish" id="btnFinish" disabled>
+            <i class="fa-solid fa-flag-checkered"></i> Finish
+          </button>
+          <p style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;" id="finishHint">
+            กด 'จำได้' หรือ 'ยังจำไม่ได้' ให้ครบทุกข้อก่อน แล้วถึงจะ Finish ได้
+          </p>
+        </div>
+        <div id="btnArea" style="display:none;">
+          <button class="btn btn-lg btn-danger" id="btnReviewAgain" style="margin-right:10px;">
+            <i class="fa-solid fa-rotate-left"></i> ยังจำไม่ได้ (Review Again)
+          </button>
+          <button class="btn btn-lg btn-success" id="btnGotIt">
+            <i class="fa-solid fa-check"></i> จำได้ (Got It)
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/supabaseAuth.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/settings.js"></script>
+  <script>
+    SupabaseAuth.requireAuth();
+    SupabaseAuth.initUserBar();
+  </script>
+  <script src="js/study.js"></script>
+</body>
+</html>

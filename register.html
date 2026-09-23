@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrainDeck — สมัครสมาชิก</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body class="auth-body">
+  <a href="index.html" class="auth-back-home"><i class="fa-solid fa-arrow-left"></i> กลับหน้าแรก</a>
+
+  <div class="auth-grid">
+    <div class="auth-brand">
+      <i class="fa-solid fa-layer-group auth-brand-logo"></i>
+      <h1>BrainDeck</h1>
+      <p>เริ่มต้นการทบทวนอย่างชาญฉลาด สร้างกองการ์ดส่วนตัวของคุณวันนี้</p>
+      <div class="auth-brand-features">
+        <div class="brand-feature"><i class="fa-solid fa-layer-group"></i> จัดการ Deck หลากหลายวิชา</div>
+        <div class="brand-feature"><i class="fa-solid fa-brain"></i> กระตุ้น Active Recall จำได้จริง</div>
+        <div class="brand-feature"><i class="fa-solid fa-gauge-high"></i> ทบทวนเฉพาะจุดที่ยังไม่แม่น</div>
+      </div>
+    </div>
+
+    <div class="auth-form-wrap">
+      <h2>สร้างบัญชีใหม่</h2>
+      <p class="auth-sub">เริ่มต้นใช้งาน BrainDeck ฟรี ไม่มีค่าใช้จ่าย</p>
+
+      <div class="auth-error" id="errorBox">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="errorMsg"></span>
+      </div>
+
+      <form id="registerForm" autocomplete="on">
+        <div class="auth-input-group">
+          <input class="auth-input" type="text" id="inputName" placeholder="ชื่อ / ชื่อเล่น" required />
+          <i class="fa-solid fa-id-card"></i>
+        </div>
+
+        <div class="auth-input-group">
+          <input class="auth-input" type="text" id="inputUsername" placeholder="Username (อย่างน้อย 3 ตัวอักษร)" minlength="3" required />
+          <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div class="auth-input-group">
+          <input class="auth-input" type="email" id="inputEmail" placeholder="อีเมล" required />
+          <i class="fa-solid fa-envelope"></i>
+        </div>
+
+        <div class="auth-input-group">
+          <input class="auth-input" type="password" id="inputPassword" placeholder="รหัสผ่าน (อย่างน้อย 6 ตัวอักษร)" minlength="6" required />
+          <i class="fa-solid fa-lock"></i>
+          <button type="button" class="toggle-password" onclick="togglePassword('inputPassword', this)"><i class="fa-regular fa-eye"></i></button>
+        </div>
+
+        <div class="auth-input-group">
+          <input class="auth-input" type="password" id="inputConfirm" placeholder="ยืนยันรหัสผ่าน" required />
+          <i class="fa-solid fa-shield-halved"></i>
+          <button type="button" class="toggle-password" onclick="togglePassword('inputConfirm', this)"><i class="fa-regular fa-eye"></i></button>
+        </div>
+
+        <button type="submit" class="auth-btn" id="btnRegister">
+          <i class="fa-solid fa-user-plus"></i> สมัครสมาชิก
+        </button>
+      </form>
+
+      <p class="auth-switch">มีบัญชีอยู่แล้ว? <a href="login.html">เข้าสู่ระบบ</a></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/supabaseAuth.js"></script>
+  <script>
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      btn.innerHTML = isPassword ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+    }
+
+    function showError(msg) {
+      document.getElementById("errorMsg").textContent = msg;
+      document.getElementById("errorBox").classList.add("show");
+    }
+
+    function clearError() {
+      document.getElementById("errorBox").classList.remove("show");
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearError();
+
+      const name = document.getElementById("inputName").value.trim();
+      const username = document.getElementById("inputUsername").value.trim();
+      const email = document.getElementById("inputEmail").value.trim();
+      const pass = document.getElementById("inputPassword").value;
+      const confirm = document.getElementById("inputConfirm").value;
+
+      if (!name || !username || !email || !pass || !confirm) {
+        showError("กรุณากรอกข้อมูลให้ครบทุกช่อง");
+        return;
+      }
+      if (pass !== confirm) {
+        showError("รหัสผ่านไม่ตรงกัน");
+        return;
+      }
+
+      const btn = document.getElementById("btnRegister");
+      btn.disabled = true;
+      const result = await SupabaseAuth.register(name, username, email, pass);
+      btn.disabled = false;
+      if (result.ok) {
+        const params = new URLSearchParams(window.location.search);
+        const returnTo = params.get("return") || "index.html";
+        window.location.href = returnTo;
+      } else {
+        showError(result.message);
+      }
+    });
+
+    document.querySelectorAll(".auth-input").forEach((el) => {
+      el.addEventListener("input", () => {
+        el.closest(".auth-input-group").classList.toggle("has-value", el.value.length > 0);
+        clearError();
+      });
+    });
+
+    SupabaseAuth.isLoggedIn().then((ok) => {
+      if (ok) window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
