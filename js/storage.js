@@ -144,6 +144,15 @@ const SupabaseStorage = (() => {
     return sessionId;
   }
 
+  async function duplicateDeck(sourceDeckId, newName = null) {
+    const { data, error } = await supabase.rpc("func_duplicate_deck", {
+      p_source_deck_id: sourceDeckId,
+      p_new_name: newName || null,
+    });
+    if (error) throw error;
+    return data;
+  }
+
   async function getStudySessions(deckId) {
     const { data, error } = await supabase
       .from("study_session")
@@ -168,5 +177,6 @@ const SupabaseStorage = (() => {
     deleteCard,
     createStudySession,
     getStudySessions,
+    duplicateDeck,
   };
 })();

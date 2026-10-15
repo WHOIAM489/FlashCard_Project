@@ -3,10 +3,13 @@ const Dashboard = (() => {
   const modalRoot = document.getElementById("modalRoot");
   const btnCreate = document.getElementById("btnCreateDeck");
 
+  let currentUid = null;
+
   btnCreate.addEventListener("click", showCreateModal);
 
   async function init() {
     const user = await SupabaseAuth.getCurrentUser();
+    currentUid = user ? user.id : null;
     const subtitle = document.querySelector(".page-subtitle");
     if (subtitle) {
       const name = user ? (user.name || user.username) : "ผู้ใช้";
@@ -36,23 +39,35 @@ const Dashboard = (() => {
     let html = '<div class="deck-grid">';
     decks.forEach((d) => {
       const date = new Date(d.created_date).toLocaleDateString("th-TH", { year: "numeric", month: "short", day: "numeric" });
+      const owned = !!currentUid && d.user_id === currentUid;
+      const lockBadge = owned
+        ? ""
+        : `<span class="deck-badge" title="เด็คส่วนกลาง อ่านได้อย่างเดียว"><i class="fa-solid fa-lock"></i> อ่านอย่างเดียว</span>`;
+      const actions = owned
+        ? `<a href="editor.html?deck=${d.deck_id}" class="btn btn-sm btn-outline" title="Edit Deck">
+             <i class="fa-solid fa-pen"></i> Edit
+           </a>
+           <a href="study.html?deck=${d.deck_id}" class="btn btn-sm btn-primary" title="Start Study">
+             <i class="fa-solid fa-play"></i> Study
+           </a>
+           <button class="btn btn-sm btn-danger" onclick="Dashboard.deleteDeck('${d.deck_id}', '${esc(d.deck_name)}')" title="Delete Deck">
+             <i class="fa-solid fa-trash"></i>
+           </button>`
+        : `<button class="btn btn-sm btn-outline" onclick="Dashboard.duplicateDeck('${d.deck_id}')" title="คัดลอกเป็นของฉัน">
+             <i class="fa-solid fa-copy"></i> คัดลอก
+           </button>
+           <a href="study.html?deck=${d.deck_id}" class="btn btn-sm btn-primary" title="Start Study">
+             <i class="fa-solid fa-play"></i> Study
+           </a>`;
       html += `
         <div class="deck-card animate-fadeIn">
-          <div class="deck-name">${esc(d.deck_name)}</div>
+          <div class="deck-name">${esc(d.deck_name)} ${lockBadge}</div>
           <div class="deck-meta">
             <span><i class="fa-regular fa-calendar"></i> ${date}</span>
           </div>
           <div class="deck-tags" id="tags-${d.deck_id}"></div>
           <div class="deck-actions">
-            <a href="editor.html?deck=${d.deck_id}" class="btn btn-sm btn-outline" title="Edit Deck">
-              <i class="fa-solid fa-pen"></i> Edit
-            </a>
-            <a href="study.html?deck=${d.deck_id}" class="btn btn-sm btn-primary" title="Start Study">
-              <i class="fa-solid fa-play"></i> Study
-            </a>
-            <button class="btn btn-sm btn-danger" onclick="Dashboard.deleteDeck('${d.deck_id}', '${esc(d.deck_name)}')" title="Delete Deck">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+            ${actions}
           </div>
         </div>`;
     });
@@ -114,6 +129,16 @@ const Dashboard = (() => {
     } catch (err) { alert("ลบไม่สำเร็จ: " + err.message); }
   }
 
+  async function duplicateDeck(deckId) {
+    const name = prompt("ตั้งชื่อเด็คสำเนาใหม่ (เว้นว่างเพื่อใช้ชื่อเดิม + ' (สำเนา)')", "");
+    if (name === null) return;
+    try {
+      const newId = await SupabaseStorage.duplicateDeck(deckId, name.trim() || null);
+      init();
+      if (newId) window.location.href = `editor.html?deck=${newId}`;
+    } catch (err) { alert("คัดลอกไม่สำเร็จ: " + err.message); }
+  }
+
   function closeModal(e) {
     if (e && e.target !== e.currentTarget) return;
     modalRoot.innerHTML = "";
@@ -127,5 +152,5 @@ const Dashboard = (() => {
 
   init();
 
-  return { showCreateModal, deleteDeck, closeModal };
+  return { showCreateModal, deleteDeck, duplicateDeck, closeModal };
 })();

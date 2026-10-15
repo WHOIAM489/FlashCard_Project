@@ -1,0 +1,57 @@
+{
+  "exportedAt": "2026-09-24T00:00:00.000Z",
+  "source": "BrainDeck mock seed (braindeck_mock)",
+  "note": "ข้อมูลตัวอย่างเดิมที่ใช้ตอนเทสต์ 4 เด็ค / 12 การ์ด / 3 เซสชัน",
+  "localStorageKeys": ["braindeck_mock", "braindeck_users", "braindeck_session", "braindeck_settings"],
+  "decks": [
+    {
+      "deck_id": "D001",
+      "deck_name": "ประวัติศาสตร์สากล: ยุคสงครามเย็น",
+      "created_date": "2026-08-20",
+      "tags": ["History", "Cold War"],
+      "cards": [
+        { "card_no": 1, "question_text": "นโยบายเปเรสตรอยกา (Perestroika) และกลัสนอสต์ (Glasnost) ของมีฮาอิล กอร์บาชอฟ มีจุดประสงค์หลักเพื่ออะไร?", "answer_text": "เปเรสตรอยกา (Perestroika) คือการปรับโครงสร้างเศรษฐกิจให้มีความเป็นทุนนิยมมากขึ้น ส่วนกลัสนอสต์ (Glasnost) คือการเปิดกว้างทางการเมืองและเสรีภาพในการแสดงความคิดเห็น เพื่อปฏิรูปและแก้ปัญหาความชะงักงันของสหภาพโซเวียต" },
+        { "card_no": 2, "question_text": "ทฤษฎีโดมิโน (Domino Theory) มีอิทธิพลต่อนโยบายต่างประเทศของสหรัฐอเมริกาในช่วงสงครามเย็นอย่างไร?", "answer_text": "ทำให้สหรัฐฯ เชื่อว่าหากประเทศหนึ่งตกอยู่ภายใต้การปกครองระบอบคอมมิวนิสต์ ประเทศเพื่อนบ้านก็จะล้มตามไปด้วย นำไปสู่การเข้าแทรกแซงทางทหารในหลายภูมิภาค เช่น สงครามเวียดนาม" },
+        { "card_no": 3, "question_text": "วิกฤตการณ์ขีปนาวุธคิวบา (Cuban Missile Crisis) ปี 1962 ส่งผลกระทบเชิงบวกต่อความสัมพันธ์ระหว่างมหาอำนาจอย่างไร?", "answer_text": "แม้จะเป็นจุดที่โลกเข้าใกล้สงครามนิวเคลียร์มากที่สุด แต่ผลลัพธ์ทำให้เกิดการจัดตั้ง 'สายด่วน' (Hotline) ระหว่างทำเนียบขาวและทำเนียบเครมลิน เพื่อให้ผู้นำทั้งสองฝ่ายสื่อสารกันได้โดยตรงและป้องกันความเข้าใจผิดในอนาคต" }
+      ]
+    },
+    {
+      "deck_id": "D002",
+      "deck_name": "ชีววิทยาระดับเซลล์ (Cellular Biology)",
+      "created_date": "2026-08-22",
+      "tags": ["Science", "Biology"],
+      "cards": [
+        { "card_no": 1, "question_text": "หลักการ Central Dogma of Molecular Biology อธิบายการถ่ายทอดข้อมูลทางพันธุกรรมไว้อย่างไร?", "answer_text": "อธิบายทิศทางการถ่ายทอดข้อมูลจาก DNA ถูกคัดลอกเป็น RNA (Transcription) และ RNA ถูกแปลรหัสกลายเป็นโปรตีน (Translation) เพื่อกำหนดลักษณะทางพันธุกรรม" },
+        { "card_no": 2, "question_text": "ในกระบวนการหายใจระดับเซลล์ (Cellular Respiration) วัฏจักรเครบส์ (Krebs cycle) เกิดขึ้นที่บริเวณใดของเซลล์?", "answer_text": "เกิดขึ้นที่เมทริกซ์ (Matrix) ซึ่งเป็นของเหลวที่อยู่ภายในออร์แกเนลล์ไมโทคอนเดรีย (Mitochondria)" },
+        { "card_no": 3, "question_text": "ความแตกต่างหลักระหว่างกระบวนการ Mitosis และ Meiosis คืออะไร?", "answer_text": "Mitosis เป็นการแบ่งเซลล์ร่างกายเพื่อให้ได้เซลล์ใหม่ 2 เซลล์ที่มีโครโมโซมเท่าเดิม (2n) ส่วน Meiosis เป็นการแบ่งเซลล์สืบพันธุ์เพื่อให้ได้เซลล์ใหม่ 4 เซลล์ที่มีโครโมโซมลดลงครึ่งหนึ่ง (n)" },
+        { "card_no": 4, "question_text": "กระบวนการ Apoptosis ในทางชีววิทยาระดับเซลล์คืออะไร และมีความสำคัญอย่างไรต่อสิ่งมีชีวิต?", "answer_text": "คือกระบวนการ 'การตายของเซลล์ที่ถูกโปรแกรมไว้' (Programmed Cell Death) เป็นกลไกธรรมชาติที่เซลล์ทำลายตัวเองอย่างเป็นระเบียบ เพื่อกำจัดเซลล์ที่หมดอายุ เสียหาย หรือเซลล์ที่อาจกลายพันธุ์เป็นมะเร็ง ถือเป็นการรักษาสมดุลของเนื้อเยื่อ" }
+      ]
+    },
+    {
+      "deck_id": "D003",
+      "deck_name": "ไวยากรณ์และโครงสร้างภาษาอังกฤษขั้นสูง",
+      "created_date": "2026-08-24",
+      "tags": ["English", "Grammar"],
+      "cards": [
+        { "card_no": 1, "question_text": "โครงสร้างประโยคเงื่อนไขแบบ Third Conditional ใช้ในสถานการณ์ใด พร้อมยกตัวอย่างโครงสร้าง?", "answer_text": "ใช้สมมติเหตุการณ์ในอดีตที่ตรงข้ามกับความเป็นจริง (สิ่งที่แก้ไขไม่ได้แล้ว) โครงสร้างคือ: If + Past Perfect, Subject + would have + V.3 (เช่น If I had studied harder, I would have passed the exam.)" },
+        { "card_no": 2, "question_text": "จงอธิบายความแตกต่างระหว่าง Gerund และ Present Participle แม้ว่าทั้งคู่จะอยู่ในรูป V.ing?", "answer_text": "Gerund ทำหน้าที่เป็น 'คำนาม' ในประโยค (เช่น Swimming is good.) ส่วน Present Participle ทำหน้าที่เป็น 'คำคุณศัพท์' ขยายคำนาม หรือใช้ประกอบใน Continuous Tense (เช่น The crying baby needs milk.)" },
+        { "card_no": 3, "question_text": "การใช้ Inversion (การสลับที่ประธานกับกริยา) มักใช้ในงานเขียนเพื่อเน้นความรู้สึกให้ดูทรงพลัง จงยกตัวอย่างโครงสร้างเมื่อขึ้นต้นประโยคด้วย 'Scarcely'", "answer_text": "โครงสร้างคือ: Scarcely + had + Subject + V.3 + when + Past Simple\nตัวอย่าง: 'Scarcely had the blue lightning struck the blade when the warrior launched his fierce counterattack.'" }
+      ]
+    },
+    {
+      "deck_id": "D004",
+      "deck_name": "ประวัติศาสตร์และวรรณกรรมสากล",
+      "created_date": "2026-08-25",
+      "tags": ["History", "Literature"],
+      "cards": [
+        { "card_no": 1, "question_text": "ในประวัติศาสตร์ญี่ปุ่นช่วงปลายยุคเอโดะ นากาคุระ ชินปาจิ (Nagakura Shinpachi) มีความสำคัญอย่างไร และเขาเป็นผู้เชี่ยวชาญวิชาดาบสายใด?", "answer_text": "เขาเป็นหัวหน้าหน่วยที่ 2 ของกองกำลังชินเซ็นงุมิ (Shinsengumi) และได้รับการยกย่องว่าเป็นหนึ่งในนักดาบที่เก่งกาจที่สุดของกลุ่ม โดยเป็นผู้สืบทอดและเชี่ยวชาญวิชาดาบสายชินโตมุเน็นริว (Shintō Munen-ryū)" },
+        { "card_no": 2, "question_text": "ในตำนานรอบินสเตอร์ (Ulster Cycle) ของชาวเคลต์ (Celtic Mythology) วีรบุรุษคูชูเลนน์ (Cú Chulainn) มีอาวุธคู่กายที่โดดเด่นคืออะไร?", "answer_text": "อาวุธคู่กายคือหอก 'เก-บอล์ก' (Gáe Bulg) เป็นหอกแห่งความตายที่เมื่อแทงเข้าสู่ร่างกายศัตรู ปลายหอกจะแตกแขนงออกเป็นหนามแหลมทำลายอวัยวะภายในจนสร้างความเสียหายอย่างรุนแรงและยากที่จะดึงออกได้" }
+      ]
+    }
+  ],
+  "sessions": [
+    { "session_id": "S1001", "deck_id": "D001", "session_date": "2026-08-21T14:30:00", "total_cards": 3, "remaining_cards": 1, "cards_to_review": 0 },
+    { "session_id": "S1002", "deck_id": "D002", "session_date": "2026-08-23T09:15:00", "total_cards": 4, "remaining_cards": 2, "cards_to_review": 1 },
+    { "session_id": "S1003", "deck_id": "D003", "session_date": "2026-08-24T20:00:00", "total_cards": 3, "remaining_cards": 3, "cards_to_review": 0 }
+  ]
+}

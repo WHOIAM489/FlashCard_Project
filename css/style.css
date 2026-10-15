@@ -158,6 +158,36 @@ a { text-decoration: none; color: inherit; }
 
 .deck-card .deck-name { font-size: 1.15rem; font-weight: 600; margin-bottom: 8px; }
 
+.deck-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  vertical-align: middle;
+  background: var(--bg-primary);
+  color: var(--warning);
+  border: 1px solid var(--border);
+}
+
+.readonly-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 4px 0 18px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid var(--warning);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+.readonly-banner i { color: var(--warning); }
+
 .deck-card .deck-meta { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
 
 .deck-card .deck-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }

@@ -11,6 +11,8 @@ const Editor = (() => {
 
   if (!deckId) { window.location.href = "index.html"; return; }
 
+  let owned = null;
+
   btnStudyTop.href = `study.html?deck=${deckId}`;
   btnAddCard.addEventListener("click", () => showCardModal());
   btnRename.addEventListener("click", showRenameModal);
@@ -19,8 +21,12 @@ const Editor = (() => {
 
   async function init() {
     try {
+      const user = await SupabaseAuth.getCurrentUser();
+      const uid = user ? user.id : null;
       const deck = await SupabaseStorage.getDeck(deckId);
+      owned = !!uid && deck.user_id === uid;
       titleEl.textContent = deck.deck_name;
+      applyOwnershipUI();
       const cards = await SupabaseStorage.getCards(deckId);
       infoEl.textContent = `${cards.length} card${cards.length !== 1 ? "s" : ""}`;
       renderCards(cards);
@@ -28,6 +34,34 @@ const Editor = (() => {
       titleEl.textContent = "Error";
       container.innerHTML = `<div class="empty-state"><p>ไม่พบ Deck นี้: ${esc(err.message)}</p></div>`;
     }
+  }
+
+  function applyOwnershipUI() {
+    const banner = document.getElementById("readonlyBanner");
+    if (owned) {
+      if (banner) banner.remove();
+      btnAddCard.style.display = "";
+      btnRename.style.display = "";
+      return;
+    }
+    btnAddCard.style.display = "none";
+    btnRename.style.display = "none";
+    if (banner) return;
+    const el = document.createElement("div");
+    el.id = "readonlyBanner";
+    el.className = "readonly-banner";
+    el.innerHTML = `
+      <span><i class="fa-solid fa-lock"></i> เด็คส่วนกลาง — อ่านได้อย่างเดียว ถ้าต้องการแก้ไขให้คัดลอกเป็นของตัวเองก่อน</span>
+      <button class="btn btn-sm btn-primary" id="btnDuplicateDeck"><i class="fa-solid fa-copy"></i> คัดลอกเป็นของฉัน</button>`;
+    infoEl.insertAdjacentElement("afterend", el);
+    document.getElementById("btnDuplicateDeck").addEventListener("click", duplicateDeck);
+  }
+
+  async function duplicateDeck() {
+    try {
+      const newId = await SupabaseStorage.duplicateDeck(deckId, null);
+      if (newId) window.location.href = `editor.html?deck=${newId}`;
+    } catch (err) { alert("คัดลอกไม่สำเร็จ: " + err.message); }
   }
 
   function renderCards(cards) {
@@ -42,14 +76,17 @@ const Editor = (() => {
     }
     let html = '<div class="card-list">';
     cards.forEach((c) => {
+      const actions = owned
+        ? `<div class="card-actions">
+            <button class="btn btn-sm btn-outline" onclick="Editor.showCardModal(${c.card_no})"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn btn-sm btn-danger" onclick="Editor.deleteCard(${c.card_no})"><i class="fa-solid fa-trash"></i></button>
+          </div>`
+        : "";
       html += `
         <div class="card-item animate-fadeIn">
           <span class="card-q"><strong>Q${c.card_no}.</strong> ${esc(c.question_text)}</span>
           <span class="card-a"><i class="fa-solid fa-arrow-right" style="margin-right:4px;color:var(--accent);"></i>${esc(c.answer_text).substring(0, 80)}${c.answer_text.length > 80 ? "..." : ""}</span>
-          <div class="card-actions">
-            <button class="btn btn-sm btn-outline" onclick="Editor.showCardModal(${c.card_no})"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn btn-sm btn-danger" onclick="Editor.deleteCard(${c.card_no})"><i class="fa-solid fa-trash"></i></button>
-          </div>
+          ${actions}
         </div>`;
     });
     html += "</div>";
@@ -57,6 +94,7 @@ const Editor = (() => {
   }
 
   function showCardModal(cardNo) {
+    if (owned === false) { alert("เด็คนี้เป็นเด็คส่วนกลาง อ่านได้อย่างเดียว — กรุณาคัดลอกเป็นของตัวเองก่อนแก้ไข"); return; }
     const isEdit = cardNo !== undefined;
     modalRoot.innerHTML = `
       <div class="modal-overlay" onclick="Editor.closeModal(event)">
@@ -92,6 +130,7 @@ const Editor = (() => {
   }
 
   async function saveCard(cardNo) {
+    if (owned === false) { alert("เด็คนี้เป็นเด็คส่วนกลาง อ่านได้อย่างเดียว — กรุณาคัดลอกเป็นของตัวเองก่อนแก้ไข"); return; }
     const q = document.getElementById("inputQuestion").value.trim();
     const a = document.getElementById("inputAnswer").value.trim();
     if (!q || !a) { alert("กรุณากรอกคำถามและคำตอบ"); return; }
@@ -107,6 +146,7 @@ const Editor = (() => {
   }
 
   async function deleteCard(cardNo) {
+    if (owned === false) { alert("เด็คนี้เป็นเด็คส่วนกลาง อ่านได้อย่างเดียว — กรุณาคัดลอกเป็นของตัวเองก่อนแก้ไข"); return; }
     if (!confirm(`ต้องการลบการ์ดข้อ ${cardNo} ออกจริงหรือไม่?`)) return;
     try {
       await SupabaseStorage.deleteCard(deckId, cardNo);
@@ -115,6 +155,7 @@ const Editor = (() => {
   }
 
   function showRenameModal() {
+    if (owned === false) { alert("เด็คนี้เป็นเด็คส่วนกลาง อ่านได้อย่างเดียว — กรุณาคัดลอกเป็นของตัวเองก่อนแก้ไข"); return; }
     modalRoot.innerHTML = `
       <div class="modal-overlay" onclick="Editor.closeModal(event)">
         <div class="modal animate-slideUp" onclick="event.stopPropagation()">
